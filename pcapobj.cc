@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcapobj.cc,v 1.7 2003/10/23 20:00:53 jkohen Exp $
+ * $Id: pcapobj.cc,v 1.10 2007/03/27 17:26:13 max Exp $
  */
 
 #include <Python.h>
@@ -57,6 +57,7 @@ static PyObject* p_datalink(register pcapobject* pp, PyObject* args);
 static PyObject* p_setnonblock(register pcapobject* pp, PyObject* args);
 static PyObject* p_getnonblock(register pcapobject* pp, PyObject* args);
 static PyObject* p_dump_open(register pcapobject* pp, PyObject* args);
+static PyObject* p_sendpacket(register pcapobject* pp, PyObject* args);
 
 
 static PyMethodDef p_methods[] = {
@@ -70,6 +71,7 @@ static PyMethodDef p_methods[] = {
   {"getnonblock", (PyCFunction) p_getnonblock, METH_VARARGS, "returns the current `non-blocking' state"},
   {"setnonblock", (PyCFunction) p_setnonblock, METH_VARARGS, "puts into `non-blocking' mode, or take it out, depending on the argument"},
   {"dump_open", (PyCFunction) p_dump_open, METH_VARARGS, "creates a dumper object"},
+  {"sendpacket", (PyCFunction) p_sendpacket, METH_VARARGS, "sends a packet through the interface"},
   {NULL, NULL}	/* sentinel */
 };
 
@@ -218,8 +220,8 @@ p_next(register pcapobject* pp, PyObject* args)
 
 
 struct PcapCallbackContext {
-  PcapCallbackContext(PyObject* f, PyThreadState* ts)
-    : pyfunc(f), thread_state(ts)
+  PcapCallbackContext(pcap_t* p, PyObject* f, PyThreadState* ts)
+    : ppcap_t(p), pyfunc(f), thread_state(ts)
   {
     Py_INCREF(pyfunc);
   }
@@ -228,6 +230,7 @@ struct PcapCallbackContext {
     Py_DECREF(pyfunc);
   }
 
+  pcap_t* ppcap_t;
   PyObject *pyfunc;
   PyThreadState *thread_state;
 
@@ -256,6 +259,11 @@ PythonCallBack(u_char *user,
   if (result)
     Py_DECREF(result);
 
+  Py_DECREF(hdr);
+
+  if (!result)
+    pcap_breakloop(pctx->ppcap_t);
+
   PyEval_SaveThread();
 }
 
@@ -274,13 +282,15 @@ p_dispatch(register pcapobject* pp, PyObject* args)
   if(!PyArg_ParseTuple(args,"iO:dispatch",&cant,&PyFunc))
     return NULL;
 
-  PcapCallbackContext ctx(PyFunc, PyThreadState_Get());
+  PcapCallbackContext ctx(pp->pcap, PyFunc, PyThreadState_Get());
   PyEval_SaveThread();
   ret = pcap_dispatch(pp->pcap, cant, PythonCallBack, (u_char*)&ctx);
   PyEval_RestoreThread(ctx.thread_state);
 
   if(ret<0) {
-    PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
+    if (ret!=-2)  
+      /* pcap error, pcap_breakloop was not called so error is not set */
+      PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
     return NULL;
   }
 
@@ -328,13 +338,15 @@ p_loop(register pcapobject* pp, PyObject* args)
   if(!PyArg_ParseTuple(args,"iO:loop",&cant,&PyFunc))
     return NULL;
 
-  PcapCallbackContext ctx(PyFunc, PyThreadState_Get());
+  PcapCallbackContext ctx(pp->pcap, PyFunc, PyThreadState_Get());
   PyEval_SaveThread();
   ret = pcap_loop(pp->pcap, cant, PythonCallBack, (u_char*)&ctx);
   PyEval_RestoreThread(ctx.thread_state);
 
   if(ret<0) {
-    PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
+    if (ret!=-2)  
+      /* pcap error, pcap_breakloop was not called so error is not set */
+      PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
     return NULL;
   }
 
@@ -396,4 +408,31 @@ p_getnonblock(register pcapobject* pp, PyObject* args)
 	}
 
 	return Py_BuildValue("i", state);
+}
+
+static PyObject*
+p_sendpacket(register pcapobject* pp, PyObject* args)
+{
+  int status;
+  unsigned char* str;
+  unsigned int length;
+
+  if (pp->ob_type != &Pcaptype)
+    {
+      PyErr_SetString(PcapError, "Not a pcap object");
+      return NULL;
+    }
+
+  if (!PyArg_ParseTuple(args,"s#", &str, &length))
+    return NULL;
+
+  status = pcap_sendpacket(pp->pcap, str, length);
+  if (status)
+    {
+      PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
+      return NULL;
+    }
+
+  Py_INCREF(Py_None);
+  return Py_None;
 }

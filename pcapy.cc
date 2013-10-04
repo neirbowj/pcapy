@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcapy.cc,v 1.5 2003/10/23 20:00:53 jkohen Exp $
+ * $Id: pcapy.cc,v 1.7 2005/12/09 15:07:04 max Exp $
  */
 
 #include <pcap.h>
@@ -37,11 +37,6 @@ lookupdev(PyObject* self, PyObject* args)
   
   return Py_BuildValue("u", dev);
 }
-
-#ifdef WIN32
-// use packet32 specific version in win32/ subdir
-extern PyObject* findalldevs(PyObject *self, PyObject *args);
-#else
 
 static PyObject*
 findalldevs(PyObject *self, PyObject *args)
@@ -75,8 +70,6 @@ findalldevs(PyObject *self, PyObject *args)
   return list;
 }
 
-#endif
-
 static PyObject*
 open_live(PyObject *self, PyObject *args)
 {
@@ -95,8 +88,8 @@ open_live(PyObject *self, PyObject *args)
   int status = pcap_lookupnet(device, &net, &mask, errbuff);
   if(status)
     {
-      PyErr_SetString(PcapError, errbuff);
-      return NULL;
+      net = 0;
+      mask = 0;
     }
   
   pcap_t* pt;
@@ -111,7 +104,7 @@ open_live(PyObject *self, PyObject *args)
   pcap_setmintocopy(pt, 0);
 #endif
 
-  return new_pcapobject( pt );
+  return new_pcapobject( pt, net, mask );
 }
 
 static PyObject*

@@ -1,4 +1,4 @@
-# $Id: setup.py,v 1.9 2004/01/05 14:56:41 jkohen Exp $
+# $Id: setup.py,v 1.11 2007/03/27 17:26:13 max Exp $
 
 from distutils.core import setup, Extension
 import sys, os
@@ -11,12 +11,10 @@ library_dirs = []
 libraries = []
 
 if sys.platform =='win32':
-    # VC include files
-    include_dirs.append(r'F:\Program Files\Microsoft Visual Studio\VC98\include')
     # WinPcap include files
-    include_dirs.append(r'F:\softdown\wpdpack\Include')
+    include_dirs.append(r'c:\devel\wpdpack\Include')
     # WinPcap library files
-    library_dirs.append(r'F:\softdown\wpdpack\Lib')
+    library_dirs.append(r'c:\devel\wpdpack\Lib')
     libraries = ['wpcap', 'packet', 'ws2_32']
 else:
     libraries = ['pcap']
@@ -32,7 +30,6 @@ sources = ['pcapdumper.cc',
            ]
 
 if sys.platform == 'win32':
-    sources.append(os.path.join('win32', 'findalldevs.cc'))
     sources.append(os.path.join('win32', 'dllmain.cc'))
     macros.append(('WIN32', '1'))
 
@@ -49,12 +46,12 @@ def my_init_posix():
 sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
-      version = "0.10.3",
+      version = "0.10.5",
       url = "http://oss.coresecurity.com/projects/pcapy.html",
       author = "Maximiliano Caceres",
       author_email = "max@coresecurity.com",
-      maintainer = "Javier Kohen",
-      maintainer_email = "jkohen@coresecurity.com",
+      maintainer = "Maximiliano Caceres",
+      maintainer_email = "max@coresecurity.com",
       description = "Python pcap extension",
       ext_modules = [Extension(
           name = PACKAGE_NAME,
