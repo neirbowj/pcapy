@@ -14,6 +14,8 @@
 #include "pcapy.h"
 #include "pcapobj.h"
 #include "bpfobj.h"
+#include "pcapdumper.h"
+#include "pcap_pkthdr.h"
 
 
 PyObject *PcapError;
@@ -191,6 +193,9 @@ initpcapy(void)
   PyObject *m, *d;
 
   Pcaptype.ob_type =  &PyType_Type;
+  Pkthdr_type.ob_type = &PyType_Type;
+  Pdumpertype.ob_type = &PyType_Type;
+
   m = Py_InitModule3("pcapy", pcap_methods, pcap_doc);
 
   /* Direct from pcap's net/bpf.h. */

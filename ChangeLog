@@ -1,3 +1,6 @@
+2009-07-30	Ezequiel Gutesman <gutes@coresecurity.com>
+	* pcapy.cc: fixed bug in initpcapy,  Pkthdr_type.ob_type and Pdumpertype.ob_type were not set. See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589956 (reported by Piotr Lewandowski)
+
 2007-03-27  Max Caceres <max@coresecurity.com>
 	* pcapobj.cc: wrapped pcap_sendpacket for sending packets in all platforms.
 
