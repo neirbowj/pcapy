@@ -1,0 +1,7 @@
+2004-01-05  Javier Kohen  <jkohen@coresecurity.com>
+
+	* setup.py: force linking with G++ when using GCC, to avoid a missing symbol in some setups.
+
+2003-11-28  Javier Kohen  <jkohen@coresecurity.com>
+
+	* dcerpc_v4.py: Fixed self.bind variable having the same name than a method.

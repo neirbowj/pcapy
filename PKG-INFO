@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
 Name: pcapy
-Version: 0.10.2
+Version: 0.10.3
 Summary: Python pcap extension
-Home-page: http://oss.coresecurity.com/pcapy
+Home-page: http://oss.coresecurity.com/projects/pcapy.html
 Author: Javier Kohen
 Author-email: jkohen@coresecurity.com
 License: UNKNOWN

@@ -1,4 +1,4 @@
-# $Id: setup.py,v 1.6 2003/10/24 19:12:05 jkohen Exp $
+# $Id: setup.py,v 1.9 2004/01/05 14:56:41 jkohen Exp $
 
 from distutils.core import setup, Extension
 import sys, os
@@ -25,10 +25,10 @@ else:
 # end of user configurable parameters
 macros = []
 sources = ['pcapdumper.cc',
+           'bpfobj.cc',
            'pcapy.cc',
            'pcapobj.cc',
            'pcap_pkthdr.cc',
-           'bpfobj.cc',
            ]
 
 if sys.platform == 'win32':
@@ -36,10 +36,21 @@ if sys.platform == 'win32':
     sources.append(os.path.join('win32', 'dllmain.cc'))
     macros.append(('WIN32', '1'))
 
+# HACK replace linker gcc with g++
+from distutils import sysconfig
+save_init_posix = sysconfig._init_posix
+def my_init_posix():
+	save_init_posix()
+	g = sysconfig._config_vars
+	if g['LDSHARED'][:3]=='gcc':
+		print 'my_init_posix: changing LDSHARED =',`g['LDSHARED']`,
+		g['LDSHARED'] = 'g++'+g['LDSHARED'][3:]
+		print 'to',`g['LDSHARED']`
+sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
-      version = "0.10.2",
-      url = "http://oss.coresecurity.com/pcapy",
+      version = "0.10.3",
+      url = "http://oss.coresecurity.com/projects/pcapy.html",
       author = "Maximiliano Caceres",
       author_email = "max@coresecurity.com",
       maintainer = "Javier Kohen",
