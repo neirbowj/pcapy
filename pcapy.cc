@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcapy.cc,v 1.7 2005/12/09 15:07:04 max Exp $
+ * $Id: pcapy.cc 46 2010-08-25 18:06:31Z gutes $
  */
 
 #include <pcap.h>
@@ -142,10 +142,10 @@ bpf_compile(PyObject* self, PyObject* args)
   int  snaplen;
   char *filter;
   int optimize;
-  int netmask;
+  unsigned int netmask;
   
   if(!PyArg_ParseTuple(args, 
-		       "iisii:compile",
+		       "iisiI:compile",
 		       &linktype,
 		       &snaplen,
 		       &filter,

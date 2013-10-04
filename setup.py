@@ -1,7 +1,9 @@
-# $Id: setup.py 41 2008-10-24 18:51:34Z aweil $
+# $Id: setup.py 47 2010-08-25 19:07:28Z aweil $
 
-from distutils.core import setup, Extension
 import sys, os
+from distutils.core import setup, Extension
+import distutils.ccompiler
+import distutils.errors
 
 PACKAGE_NAME = 'pcapy'
 
@@ -46,7 +48,7 @@ def my_init_posix():
 sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
-      version = "0.10.6",
+      version = "0.10.8",
       url = "http://oss.coresecurity.com/projects/pcapy.html",
       author = "Maximiliano Caceres",
       author_email = "oss@coresecurity.com",

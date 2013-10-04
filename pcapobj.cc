@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcapobj.cc 41 2008-10-24 18:51:34Z aweil $
+ * $Id: pcapobj.cc 45 2009-02-05 14:11:33Z gera $
  */
 
 #include <Python.h>
@@ -57,7 +57,9 @@ static PyObject* p_datalink(register pcapobject* pp, PyObject* args);
 static PyObject* p_setnonblock(register pcapobject* pp, PyObject* args);
 static PyObject* p_getnonblock(register pcapobject* pp, PyObject* args);
 static PyObject* p_dump_open(register pcapobject* pp, PyObject* args);
+#ifdef HAVE_PCAP_SENDPACKET
 static PyObject* p_sendpacket(register pcapobject* pp, PyObject* args);
+#endif
 
 
 static PyMethodDef p_methods[] = {
@@ -71,7 +73,9 @@ static PyMethodDef p_methods[] = {
   {"getnonblock", (PyCFunction) p_getnonblock, METH_VARARGS, "returns the current `non-blocking' state"},
   {"setnonblock", (PyCFunction) p_setnonblock, METH_VARARGS, "puts into `non-blocking' mode, or take it out, depending on the argument"},
   {"dump_open", (PyCFunction) p_dump_open, METH_VARARGS, "creates a dumper object"},
+#ifdef HAVE_PCAP_SENDPACKET
   {"sendpacket", (PyCFunction) p_sendpacket, METH_VARARGS, "sends a packet through the interface"},
+#endif
   {NULL, NULL}	/* sentinel */
 };
 
@@ -417,6 +421,7 @@ p_getnonblock(register pcapobject* pp, PyObject* args)
 	return Py_BuildValue("i", state);
 }
 
+#ifdef HAVE_PCAP_SENDPACKET
 static PyObject*
 p_sendpacket(register pcapobject* pp, PyObject* args)
 {
@@ -443,3 +448,4 @@ p_sendpacket(register pcapobject* pp, PyObject* args)
   Py_INCREF(Py_None);
   return Py_None;
 }
+#endif
