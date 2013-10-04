@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: bpfobj.cc,v 1.4 2003/10/24 18:49:33 jkohen Exp $
+ * $Id: bpfobj.cc 24 2003-10-24 18:49:33Z jkohen $
  */
 
 #include <pcap.h>

@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcapobj.cc,v 1.10 2007/03/27 17:26:13 max Exp $
+ * $Id: pcapobj.cc 41 2008-10-24 18:51:34Z aweil $
  */
 
 #include <Python.h>
@@ -50,7 +50,7 @@ pcap_dealloc(register pcapobject* pp)
 static PyObject* p_getnet(register pcapobject* pp, PyObject* args);
 static PyObject* p_getmask(register pcapobject* pp, PyObject* args);
 static PyObject* p_setfilter( register pcapobject* pp, PyObject* args );
-static PyObject* p_next(register pcapobject* pp, PyObject* args);
+static PyObject* p_next(register pcapobject* pp, PyObject*);
 static PyObject* p_dispatch(register pcapobject* pp, PyObject* args);
 static PyObject* p_loop(register pcapobject* pp, PyObject* args);
 static PyObject* p_datalink(register pcapobject* pp, PyObject* args);
@@ -63,7 +63,7 @@ static PyObject* p_sendpacket(register pcapobject* pp, PyObject* args);
 static PyMethodDef p_methods[] = {
   {"loop", (PyCFunction) p_loop, METH_VARARGS, "loops packet dispatching"},
   {"dispatch", (PyCFunction) p_dispatch, METH_VARARGS, "dispatchs packets"},
-  {"next", (PyCFunction) p_next, METH_VARARGS, "returns next packet"},
+  {"next", (PyCFunction) p_next, METH_NOARGS, "returns next packet"},
   {"setfilter", (PyCFunction) p_setfilter, METH_VARARGS, "compiles and sets a BPF capture filter"},
   {"getnet", (PyCFunction) p_getnet, METH_VARARGS, "returns the network address for the device"},
   {"getmask", (PyCFunction) p_getmask, METH_VARARGS, "returns the netmask for the device"},
@@ -191,7 +191,7 @@ p_setfilter(register pcapobject* pp, PyObject* args)
 }
 
 static PyObject*
-p_next(register pcapobject* pp, PyObject* args)
+p_next(register pcapobject* pp, PyObject*)
 {
   struct pcap_pkthdr hdr;
   const unsigned char *buf;
@@ -214,10 +214,17 @@ p_next(register pcapobject* pp, PyObject* args)
     }
 
   PyObject *pkthdr = new_pcap_pkthdr(&hdr);
+    if (pkthdr)
+    {
+        PyObject *ret = NULL;
+        ret = Py_BuildValue("(Os#)", pkthdr, buf, hdr.caplen);
+        Py_DECREF(pkthdr);
+        return ret;
+    }
 
-  return Py_BuildValue("(Os#)", pkthdr, buf, hdr.caplen);
+  PyErr_SetString(PcapError, "Can't build pkthdr");
+  return NULL;
 }
-
 
 struct PcapCallbackContext {
   PcapCallbackContext(pcap_t* p, PyObject* f, PyThreadState* ts)

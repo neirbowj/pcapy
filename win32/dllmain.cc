@@ -7,7 +7,7 @@
  *
  * Win32 DLL entry point.
  *
- * $Id: dllmain.cc,v 1.2 2003/10/23 20:00:54 jkohen Exp $
+ * $Id: dllmain.cc 21 2003-10-23 20:00:54Z jkohen $
  */
 
 #include <windows.h>

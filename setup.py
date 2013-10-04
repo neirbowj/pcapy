@@ -1,4 +1,4 @@
-# $Id: setup.py,v 1.11 2007/03/27 17:26:13 max Exp $
+# $Id: setup.py 41 2008-10-24 18:51:34Z aweil $
 
 from distutils.core import setup, Extension
 import sys, os
@@ -12,9 +12,9 @@ libraries = []
 
 if sys.platform =='win32':
     # WinPcap include files
-    include_dirs.append(r'c:\devel\wpdpack\Include')
+    include_dirs.append(r'c:\devel\oss\wpdpack\Include')
     # WinPcap library files
-    library_dirs.append(r'c:\devel\wpdpack\Lib')
+    library_dirs.append(r'c:\devel\oss\wpdpack\Lib')
     libraries = ['wpcap', 'packet', 'ws2_32']
 else:
     libraries = ['pcap']
@@ -46,12 +46,12 @@ def my_init_posix():
 sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
-      version = "0.10.5",
+      version = "0.10.6",
       url = "http://oss.coresecurity.com/projects/pcapy.html",
       author = "Maximiliano Caceres",
-      author_email = "max@coresecurity.com",
-      maintainer = "Maximiliano Caceres",
-      maintainer_email = "max@coresecurity.com",
+      author_email = "oss@coresecurity.com",
+      maintainer = "Core Security Technologies",
+      maintainer_email = "oss@coresecurity.com",
       description = "Python pcap extension",
       ext_modules = [Extension(
           name = PACKAGE_NAME,
@@ -60,6 +60,7 @@ setup(name = PACKAGE_NAME,
           include_dirs = include_dirs,
           library_dirs = library_dirs,
           libraries = libraries)],
+      scripts = ['tests/pcapytests.py', 'tests/96pings.pcap'],
       data_files = [(os.path.join('share', 'doc', PACKAGE_NAME),
                      ['README', 'LICENSE', 'pcapy.html'])],
       )

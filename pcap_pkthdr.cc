@@ -5,7 +5,7 @@
  * of the Apache Software License. See the accompanying LICENSE file
  * for more information.
  *
- * $Id: pcap_pkthdr.cc,v 1.3 2003/10/23 20:00:53 jkohen Exp $
+ * $Id: pcap_pkthdr.cc 21 2003-10-23 20:00:54Z jkohen $
  */
 
 #include <Python.h>

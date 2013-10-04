@@ -3,7 +3,7 @@
                "docbook/dtd/xml/4.1.2/docbookx.dtd" [
 <!ENTITY corest "CORE SECURITY TECHNOLOGIES">
 ]>
-<!-- $Id: pcapy.xml,v 1.2 2003/10/23 17:24:27 jkohen Exp $ -->
+<!-- $Id: pcapy.xml 15 2003-10-23 17:24:27Z jkohen $ -->
 <part>
   <partinfo>
     <copyright>
@@ -19,8 +19,8 @@
     </keywordset>
     <revhistory>
       <revision>
-	<revnumber>$Revision: 1.2 $</revnumber>
-	<date>$Date: 2003/10/23 17:24:27 $</date>
+	<revnumber>$Revision: 15 $</revnumber>
+	<date>$Date: 2003-10-23 14:24:27 -0300 (Jue, 23 Oct 2003) $</date>
 	<authorinitials>$Author: jkohen $</authorinitials>
 	<revremark>Initial revision</revremark>
       </revision>
