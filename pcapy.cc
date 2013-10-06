@@ -84,7 +84,7 @@ open_live(PyObject *self, PyObject *args)
   bpf_u_int32 net, mask;
   
   
-  if(!PyArg_ParseTuple(args,"siii:open_live",&device,&snaplen,&promisc,&to_ms))
+  if(!PyArg_ParseTuple(args,"sipi:open_live",&device,&snaplen,&promisc,&to_ms))
     return NULL;
   
   int status = pcap_lookupnet(device, &net, &mask, errbuff);
@@ -145,7 +145,7 @@ bpf_compile(PyObject* self, PyObject* args)
   unsigned int netmask;
   
   if(!PyArg_ParseTuple(args, 
-		       "iisiI:compile",
+		       "iispI:compile",
 		       &linktype,
 		       &snaplen,
 		       &filter,
