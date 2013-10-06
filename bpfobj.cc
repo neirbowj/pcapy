@@ -56,7 +56,7 @@ PyTypeObject BPFProgramtype = {
   "Bpf",
   sizeof(bpfobject),
   0,
-  
+
   /* methods */
   (destructor)bpfprog_dealloc,  /*tp_dealloc*/
   0,			  /*tp_print*/
@@ -77,13 +77,13 @@ new_bpfobject(const struct bpf_program &bpfprog)
   bpf = PyObject_New(bpfobject, &BPFProgramtype);
   if (bpf == NULL)
     return NULL;
-  
+
   bpf->bpf = bpfprog;
   return (PyObject*)bpf;
 }
 
 
-static PyObject* 
+static PyObject*
 p_filter(register bpfobject* bpf, PyObject* args)
 {
   int status;
