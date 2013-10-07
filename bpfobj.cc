@@ -39,8 +39,14 @@ static PyObject* p_filter(register bpfobject* bpf, PyObject* args);
 
 
 static PyMethodDef bpf_methods[] = {
-  {"filter", (PyCFunction) p_filter, METH_VARARGS, "filter(packet) applies the filter to the packet, returns 0 if there's no match"},
-  {NULL, NULL}	/* sentinel */
+    {
+        "filter", (PyCFunction) p_filter, METH_VARARGS,
+        "filter(self, packet)\n\n"
+        "Run the BPF filter of this instance against packet\n"
+        "Return the int result of the filter code, conventionally the number"
+        "of packet octets to accept (0=no match)."
+    },
+    {NULL, NULL}	/* sentinel */
 };
 
 static PyObject*

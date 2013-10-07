@@ -43,8 +43,14 @@ static PyObject* p_dump(register pcapdumper* pp, PyObject* args);
 
 static PyMethodDef p_methods[] = {
 //  {"close", (PyCFunction) p_close, METH_VARARGS, "loops packet dispatching"},
-  {"dump", (PyCFunction) p_dump, METH_VARARGS, "dump a packet to the file"},
-  {NULL, NULL}	/* sentinel */
+    {
+        "dump", (PyCFunction) p_dump, METH_VARARGS,
+        "dump(self, hdr, data)\n\n"
+        "Dump a packet to the file.\n\n"
+        "hdr\n a pkthdr object that specifies the packet's ts, caplen, and len\n"
+        "data\n raw packet data"
+    },
+    {NULL, NULL}	/* sentinel */
 };
 
 static PyObject*

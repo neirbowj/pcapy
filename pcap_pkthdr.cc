@@ -46,10 +46,22 @@ static PyObject* p_getlen(register pkthdr* pp, PyObject* args);
 
 
 static PyMethodDef p_methods[] = {
-  {"getts", (PyCFunction) p_getts, METH_VARARGS, "get timestamp tuple (seconds, microseconds) since the Epoch"},
-  {"getcaplen", (PyCFunction) p_getcaplen, METH_VARARGS, "returns the length of portion present"},
-  {"getlen", (PyCFunction) p_getlen, METH_VARARGS, "returns the length of the packet (off wire)"},
-  {NULL, NULL}	/* sentinel */
+    {
+        "getts", (PyCFunction) p_getts, METH_VARARGS,
+        "getts(self)\n\n"
+        "Return timestamp tuple (seconds, microseconds) since the UNIX Epoch."
+    },
+    {
+        "getcaplen", (PyCFunction) p_getcaplen, METH_VARARGS,
+        "getcaplen(self)\n\n"
+        "Return number of octets captured."
+    },
+    {
+        "getlen", (PyCFunction) p_getlen, METH_VARARGS,
+        "getlen(self)\n\n"
+        "Return number of total octets in this packet (off wire)."
+    },
+    {NULL, NULL}	/* sentinel */
 };
 
 static PyObject*

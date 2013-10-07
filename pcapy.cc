@@ -174,12 +174,46 @@ bpf_compile(PyObject* self, PyObject* args)
 
 
 static PyMethodDef pcap_methods[] = {
-  {"open_live", open_live, METH_VARARGS, "open_live(device, snaplen, promisc, to_ms) opens a pcap device"},
-  {"open_offline", open_offline, METH_VARARGS, "open_offline(filename) opens a pcap formated file"},
-  {"lookupdev", lookupdev, METH_VARARGS, "lookupdev() looks up a pcap device"},
-  {"findalldevs", findalldevs, METH_VARARGS, "findalldevs() lists all available interfaces"},
-  {"compile", bpf_compile, METH_VARARGS, "compile(linktype, snaplen, filter, optimize, netmask) creates a bpfprogram object"},
-  {NULL, NULL}
+    {
+        "open_live", open_live, METH_VARARGS,
+        "open_live(device, snaplen, promisc, to_ms)\n\n"
+        "Open a pcap device for capture/injection. "
+        "Return a new `pcap` object.\n\n"
+        "device\n symbolic name of the device\n"
+        "snaplen\n number of bytes to capture (0 = unlimited)\n"
+        "promisc\n whether to place the device in promiscuous mode (0 = no)\n"
+        "to_ms\n read timeout in milliseconds"
+    },
+    {
+        "open_offline", open_offline, METH_VARARGS,
+        "open_offline(filename)\n\n"
+        "Open a pcap formatted file. Return a new `pcap` object.\n\n"
+        "filename\n name of the 'savefile'"
+    },
+    {
+        "lookupdev", lookupdev, METH_VARARGS,
+        "lookupdev()\n\n"
+        "Return the symbolic name of the default pcap device."
+    },
+    {
+        "findalldevs", findalldevs, METH_VARARGS,
+        "findalldevs()\n\n"
+        "Return a list of symbolic names of all available pcap devices."
+    },
+    {
+        "compile", bpf_compile, METH_VARARGS,
+        "compile(linktype, snaplen, filter, optimize, netmask)\n\n"
+        "Compile a filter specification to a BPF bytecode program. "
+        "Return a new `bpf` object.\n\n"
+        "linktype\n link layer header type ID code*\n"
+        "snaplen\n number of bytes captured per packet\n"
+        "filter\n filter specification per pcap-filter(7)\n"
+        "optimize\n perform optimization on the resulting code?\n"
+        "netmask\n IPv4 netmask encoded as an int of the capture network\n\n"
+        "See pcap_compile(3PCAP) for more information about netmask.\n\n"
+        "*You probably want `pcapy.DLT_EN10MB`."
+    },
+    {NULL, NULL}
 };
 
 
