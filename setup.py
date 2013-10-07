@@ -42,9 +42,10 @@ def my_init_posix():
 	save_init_posix()
 	g = sysconfig._config_vars
 	if g['LDSHARED'][:3]=='gcc':
-		print 'my_init_posix: changing LDSHARED =',`g['LDSHARED']`,
+		before = g['LDSHARED']
 		g['LDSHARED'] = 'g++'+g['LDSHARED'][3:]
-		print 'to',`g['LDSHARED']`
+		print('my_init_posix: changing LDSHARED ={} to {}'.format(
+			before, g['LDSHARED']))
 sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
