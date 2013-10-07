@@ -9,7 +9,7 @@
  */
 
 #ifndef __PCAPY_H__
-
+#define __PCAPY_H__
 
 extern "C" {
 #ifdef WIN32
