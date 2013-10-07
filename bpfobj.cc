@@ -15,26 +15,26 @@
 #include "pcapy.h"
 
 
-// internal bpfobject
+/* internal bpfobject */
 typedef struct {
 	PyObject_HEAD
 	struct bpf_program bpf;
 } bpfobject;
 
 
-// BPFProgramType
+/* BPFProgramType */
 
 static void
 bpfprog_dealloc(register bpfobject* bpf)
 {
-#ifndef WIN32 // XXX: is this missing from winpcap 2.3?
+#ifndef WIN32 /* XXX: is this missing from winpcap 2.3? */
   pcap_freecode(&bpf->bpf);
 #endif
   PyObject_Del(bpf);
 }
 
 
-// BPFProgram methods
+/* BPFProgram methods */
 static PyObject* p_filter(register bpfobject* bpf, PyObject* args);
 
 

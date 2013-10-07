@@ -16,4 +16,4 @@ new_bpfobject(const struct bpf_program &bpf);
 
 extern PyTypeObject Pcaptype;
 
-#endif // __bpfobj__
+#endif /* __bpfobj__ */

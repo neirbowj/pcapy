@@ -22,7 +22,7 @@ PyObject *PcapError;
 
 
 
-// module methods
+/* module methods */
 
 static PyObject* 
 lookupdev(PyObject* self, PyObject* args)

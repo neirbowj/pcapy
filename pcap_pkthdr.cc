@@ -21,7 +21,7 @@
 #endif
 
 
-// internal pcapobject
+/* internal pcapobject */
 typedef struct {
 	PyObject_HEAD
 	struct timeval ts;
@@ -30,7 +30,7 @@ typedef struct {
 } pkthdr;
 
 
-// Pkthdr_Type
+/* Pkthdr_Type */
 
 static void
 pcap_dealloc(register pkthdr* pp)
@@ -39,7 +39,7 @@ pcap_dealloc(register pkthdr* pp)
 }
 
 
-// pcap methods
+/* pcap methods */
 static PyObject* p_getts(register pkthdr* pp, PyObject* args);
 static PyObject* p_getcaplen(register pkthdr* pp, PyObject* args);
 static PyObject* p_getlen(register pkthdr* pp, PyObject* args);

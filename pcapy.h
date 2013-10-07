@@ -18,7 +18,7 @@ __declspec(dllexport)
 void initpcapy(void);
 }
 
-// exception object
+/* exception object */
 extern PyObject* PcapError;
 
-#endif // __PCAPY_H__
+#endif /* __PCAPY_H__ */

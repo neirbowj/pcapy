@@ -23,7 +23,7 @@
 #endif
 
 
-// internal pcapobject
+/* internal pcapobject */
 typedef struct {
 	PyObject_HEAD
 	pcap_t *pcap;
@@ -32,7 +32,7 @@ typedef struct {
 } pcapobject;
 
 
-// PcapType
+/* PcapType */
 
 static void
 pcap_dealloc(register pcapobject* pp)
@@ -46,7 +46,7 @@ pcap_dealloc(register pcapobject* pp)
 }
 
 
-// pcap methods
+/* pcap methods */
 static PyObject* p_getnet(register pcapobject* pp, PyObject* args);
 static PyObject* p_getmask(register pcapobject* pp, PyObject* args);
 static PyObject* p_setfilter( register pcapobject* pp, PyObject* args );
@@ -206,7 +206,7 @@ p_next(register pcapobject* pp, PyObject*)
       return NULL;
     }
 
-  // allow threads as this might block
+  /* allow threads as this might block */
   Py_BEGIN_ALLOW_THREADS;
   buf = pcap_next(pp->pcap, &hdr);
   Py_END_ALLOW_THREADS;

@@ -20,4 +20,4 @@ pkthdr_to_native(PyObject *pyhdr, struct pcap_pkthdr *hdr);
 
 extern PyTypeObject Pkthdr_type;
 
-#endif // __pcap_pkthdr__
+#endif /* __pcap_pkthdr__ */

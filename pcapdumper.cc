@@ -15,14 +15,14 @@
 #include "pcap_pkthdr.h"
 #include "pcapy.h"
 
-// internal pcapdumper
+/* internal pcapdumper */
 typedef struct {
 	PyObject_HEAD
 	pcap_dumper_t *dumper;
 } pcapdumper;
 
 
-// Pdumpertype
+/* Pdumpertype */
 
 static void
 pcap_dealloc(register pcapdumper* pp)
@@ -36,13 +36,13 @@ pcap_dealloc(register pcapdumper* pp)
 }
 
 
-// pcap methods
-//static PyObject* p_close(register pcapdumper* pp, PyObject* args);
+/* pcap methods */
+/*static PyObject* p_close(register pcapdumper* pp, PyObject* args);*/
 static PyObject* p_dump(register pcapdumper* pp, PyObject* args);
 
 
 static PyMethodDef p_methods[] = {
-//  {"close", (PyCFunction) p_close, METH_VARARGS, "loops packet dispatching"},
+/*  {"close", (PyCFunction) p_close, METH_VARARGS, "loops packet dispatching"}, */
     {
         "dump", (PyCFunction) p_dump, METH_VARARGS,
         "dump(self, hdr, data)\n\n"
