@@ -49,7 +49,7 @@ def my_init_posix():
 sysconfig._init_posix = my_init_posix
 
 setup(name = PACKAGE_NAME,
-      version = "0.10.8",
+      version = "0.10.9-dev",
       url = "http://oss.coresecurity.com/projects/pcapy.html",
       author = "Maximiliano Caceres",
       author_email = "oss@coresecurity.com",
