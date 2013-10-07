@@ -77,14 +77,14 @@ PyTypeObject BPFProgramtype = {
 
 
 PyObject*
-new_bpfobject(const struct bpf_program &bpfprog)
+new_bpfobject(const struct bpf_program *bpfprog)
 {
   bpfobject *bpf;
   bpf = PyObject_New(bpfobject, &BPFProgramtype);
   if (bpf == NULL)
     return NULL;
 
-  bpf->bpf = bpfprog;
+  bpf->bpf = *bpfprog;
   return (PyObject*)bpf;
 }
 

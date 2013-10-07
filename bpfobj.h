@@ -12,7 +12,7 @@
 #define __bpfobj__
 
 PyObject*
-new_bpfobject(const struct bpf_program &bpf);
+new_bpfobject(const struct bpf_program *bpf);
 
 extern PyTypeObject Pcaptype;
 

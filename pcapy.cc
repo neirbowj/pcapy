@@ -169,7 +169,7 @@ bpf_compile(PyObject* self, PyObject* args)
       return NULL;
     }
   
-  return new_bpfobject( bpf );
+  return new_bpfobject( &bpf );
 }
 
 
