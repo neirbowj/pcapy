@@ -275,7 +275,7 @@ PythonCallBack(u_char *user,
   if (!result)
     pcap_breakloop(pctx->ppcap_t);
 
-  PyEval_SaveThread();
+  pctx->thread_state = PyEval_SaveThread();
 }
 
 static PyObject*
