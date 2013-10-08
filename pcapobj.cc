@@ -231,22 +231,10 @@ p_next(register pcapobject* pp, PyObject*)
 }
 
 struct PcapCallbackContext {
-  PcapCallbackContext(pcap_t* p, PyObject* f, PyThreadState* ts)
-    : ppcap_t(p), pyfunc(f), thread_state(ts)
-  {
-    Py_INCREF(pyfunc);
-  }
-  ~PcapCallbackContext()
-  {
-    Py_DECREF(pyfunc);
-  }
-
-  pcap_t* ppcap_t;
-  PyObject *pyfunc;
-  PyThreadState *thread_state;
-
+    pcap_t* ppcap_t;
+    PyObject* pyfunc;
+    PyThreadState* thread_state;
 };
-
 
 static void
 PythonCallBack(u_char *user,
@@ -255,9 +243,9 @@ PythonCallBack(u_char *user,
 {
   PyObject *arglist, *result;
   unsigned int *len;
-  PcapCallbackContext *pctx;
+  struct PcapCallbackContext *pctx;
   len    = (unsigned int *)&header->caplen;
-  pctx = (PcapCallbackContext *)user;
+  pctx = (struct PcapCallbackContext *)user;
 
   PyEval_RestoreThread(pctx->thread_state);
 
@@ -283,6 +271,7 @@ p_dispatch(register pcapobject* pp, PyObject* args)
 {
   int cant, ret;
   PyObject *PyFunc;
+  struct PcapCallbackContext ctx;
 
   if (pp->ob_type != &Pcaptype)
     {
@@ -293,10 +282,13 @@ p_dispatch(register pcapobject* pp, PyObject* args)
   if(!PyArg_ParseTuple(args,"iO:dispatch",&cant,&PyFunc))
     return NULL;
 
-  PcapCallbackContext ctx(pp->pcap, PyFunc, PyThreadState_Get());
-  PyEval_SaveThread();
+  ctx.ppcap_t = pp->pcap;
+  ctx.pyfunc = PyFunc;
+  Py_INCREF(ctx.pyfunc);
+  ctx.thread_state = PyEval_SaveThread();
   ret = pcap_dispatch(pp->pcap, cant, PythonCallBack, (u_char*)&ctx);
   PyEval_RestoreThread(ctx.thread_state);
+  Py_DECREF(ctx.pyfunc);
 
   if(ret<0) {
     if (ret!=-2)  
@@ -339,6 +331,7 @@ p_loop(register pcapobject* pp, PyObject* args)
 {
   int cant, ret;
   PyObject *PyFunc;
+  struct PcapCallbackContext ctx;
 
   if (pp->ob_type != &Pcaptype)
     {
@@ -349,10 +342,13 @@ p_loop(register pcapobject* pp, PyObject* args)
   if(!PyArg_ParseTuple(args,"iO:loop",&cant,&PyFunc))
     return NULL;
 
-  PcapCallbackContext ctx(pp->pcap, PyFunc, PyThreadState_Get());
-  PyEval_SaveThread();
+  ctx.ppcap_t = pp->pcap;
+  ctx.pyfunc = PyFunc;
+  Py_INCREF(ctx.pyfunc);
+  ctx.thread_state = PyEval_SaveThread();
   ret = pcap_loop(pp->pcap, cant, PythonCallBack, (u_char*)&ctx);
   PyEval_RestoreThread(ctx.thread_state);
+  Py_DECREF(ctx.pyfunc);
 
   if(ret<0) {
     if (ret!=-2)  
