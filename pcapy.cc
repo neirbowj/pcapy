@@ -131,7 +131,7 @@ open_offline(PyObject *self, PyObject *args)
   pcap_setmintocopy(pt, 0);
 #endif
 
-  return new_pcapobject( pt );
+  return new_pcapobject( pt, /*net=*/0, /*mask=*/0 );
 }
 
 
