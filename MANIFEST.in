@@ -4,4 +4,4 @@ include ChangeLog
 include pcapy.xml
 include pcapy.html
 include *.h
-recursive-include win32 *.cc
+recursive-include win32 *.c

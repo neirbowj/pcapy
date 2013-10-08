@@ -24,11 +24,11 @@ else:
 
 # end of user configurable parameters
 macros = []
-sources = ['pcapdumper.cc',
-           'bpfobj.cc',
-           'pcapy.cc',
-           'pcapobj.cc',
-           'pcap_pkthdr.cc',
+sources = ['pcapdumper.c',
+           'bpfobj.c',
+           'pcapy.c',
+           'pcapobj.c',
+           'pcap_pkthdr.c',
            ]
 
 if sys.platform == 'win32':
