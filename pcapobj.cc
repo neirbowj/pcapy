@@ -50,7 +50,7 @@ pcap_dealloc(register pcapobject* pp)
 static PyObject* p_getnet(register pcapobject* pp, PyObject* args);
 static PyObject* p_getmask(register pcapobject* pp, PyObject* args);
 static PyObject* p_setfilter( register pcapobject* pp, PyObject* args );
-static PyObject* p_next(register pcapobject* pp, PyObject*);
+static PyObject* p_next(register pcapobject* pp, PyObject* args);
 static PyObject* p_dispatch(register pcapobject* pp, PyObject* args);
 static PyObject* p_loop(register pcapobject* pp, PyObject* args);
 static PyObject* p_datalink(register pcapobject* pp, PyObject* args);
@@ -195,7 +195,7 @@ p_setfilter(register pcapobject* pp, PyObject* args)
 }
 
 static PyObject*
-p_next(register pcapobject* pp, PyObject*)
+p_next(register pcapobject* pp, PyObject* args)
 {
   struct pcap_pkthdr hdr;
   const unsigned char *buf;
