@@ -24,19 +24,19 @@ PyObject *PcapError;
 
 /* module methods */
 
-static PyObject* 
+static PyObject*
 lookupdev(PyObject* self, PyObject* args)
 {
   char errbuff[PCAP_ERRBUF_SIZE];
   char* dev;
-  
+
   dev = pcap_lookupdev(errbuff);
   if(!dev)
     {
       PyErr_SetString(PcapError, errbuff);
       return NULL;
     }
-  
+
   return Py_BuildValue("u", dev);
 }
 
@@ -68,7 +68,7 @@ findalldevs(PyObject *self, PyObject *args)
     }
 
   pcap_freealldevs(devs);
-  
+
   return list;
 }
 
@@ -80,22 +80,22 @@ open_live(PyObject *self, PyObject *args)
   int  snaplen;
   int  promisc;
   int  to_ms;
-  
+
   bpf_u_int32 net, mask;
-  
-  
+
+
   if(!PyArg_ParseTuple(args,"sipi:open_live",&device,&snaplen,&promisc,&to_ms))
     return NULL;
-  
+
   int status = pcap_lookupnet(device, &net, &mask, errbuff);
   if(status)
     {
       net = 0;
       mask = 0;
     }
-  
+
   pcap_t* pt;
-	
+
   pt = pcap_open_live(device, snaplen, promisc!=0, to_ms, errbuff);
   if(!pt)
     {
@@ -114,13 +114,13 @@ open_offline(PyObject *self, PyObject *args)
 {
   char errbuff[PCAP_ERRBUF_SIZE];
   char * filename;
-  
-  
+
+
   if(!PyArg_ParseTuple(args,"s",&filename))
     return NULL;
-  
+
   pcap_t* pt;
-	
+
   pt = pcap_open_offline(filename, errbuff);
   if(!pt)
     {
@@ -143,8 +143,8 @@ bpf_compile(PyObject* self, PyObject* args)
   char *filter;
   int optimize;
   unsigned int netmask;
-  
-  if(!PyArg_ParseTuple(args, 
+
+  if(!PyArg_ParseTuple(args,
 		       "iispI:compile",
 		       &linktype,
 		       &snaplen,
@@ -152,7 +152,7 @@ bpf_compile(PyObject* self, PyObject* args)
 		       &optimize,
 		       &netmask))
     return NULL;
-  
+
   pcap_t *pp;
 
   pp = pcap_open_dead(linktype, snaplen);
@@ -168,7 +168,7 @@ bpf_compile(PyObject* self, PyObject* args)
       PyErr_SetString(PcapError, pcap_geterr(pp));
       return NULL;
     }
-  
+
   return new_bpfobject( &bpf );
 }
 

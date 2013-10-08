@@ -291,7 +291,7 @@ p_dispatch(register pcapobject* pp, PyObject* args)
   Py_DECREF(ctx.pyfunc);
 
   if(ret<0) {
-    if (ret!=-2)  
+    if (ret!=-2)
       /* pcap error, pcap_breakloop was not called so error is not set */
       PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
     return NULL;
@@ -351,7 +351,7 @@ p_loop(register pcapobject* pp, PyObject* args)
   Py_DECREF(ctx.pyfunc);
 
   if(ret<0) {
-    if (ret!=-2)  
+    if (ret!=-2)
       /* pcap error, pcap_breakloop was not called so error is not set */
       PyErr_SetString(PcapError, pcap_geterr(pp->pcap));
     return NULL;
