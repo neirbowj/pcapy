@@ -10,7 +10,7 @@ Pythonization, and testing. Issues and pull requests are welcome.
 TODO
 ----
 
-*   Enhance docstrings
+*   Enhance docstrings -- mostly done
 *   Adopt Python native data types where natural
-*   Begin writing a unit test suite
+*   Begin writing a unit test suite -- in progress
 *   Port to Python 3 (stretch goal)
