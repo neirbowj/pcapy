@@ -191,12 +191,12 @@ static PyMethodDef pcap_methods[] = {
         "filename\n name of the 'savefile'"
     },
     {
-        "lookupdev", lookupdev, METH_VARARGS,
+        "lookupdev", lookupdev, METH_NOARGS,
         "lookupdev()\n\n"
         "Return the symbolic name of the default pcap device."
     },
     {
-        "findalldevs", findalldevs, METH_VARARGS,
+        "findalldevs", findalldevs, METH_NOARGS,
         "findalldevs()\n\n"
         "Return a list of symbolic names of all available pcap devices."
     },
