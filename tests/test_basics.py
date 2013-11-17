@@ -13,9 +13,22 @@ __doc__ = """
     TODO: Make some tests conditional, when possible.
 """
 
+def expectTravisCIFailure():
+    "Travis-CI presents no PCAP-compatible network interfaces"
+    import os
+    try:
+        if os.environ['TRAVIS'] == 'true' and os.environ['CI'] == 'true':
+            return unittest.expectedFailure()
+    except KeyError:
+        pass
+
+    return lambda func: func
+
+
 class TestBasics(unittest.TestCase):
     "Performs sanity checks on the core API"
 
+    @expectTravisCIFailure()
     def test_have_default_device(self):
         "lookupdev() returns a non-empty string"
 
@@ -24,6 +37,7 @@ class TestBasics(unittest.TestCase):
         self.assertNotEqual(defaultdev, "")
 
 
+    @expectTravisCIFailure()
     def test_alldevs(self):
         "findalldevs() returns a list of strings including the default device"
 
