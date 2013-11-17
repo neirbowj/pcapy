@@ -18,7 +18,7 @@ def expectTravisCIFailure():
     import os
     try:
         if os.environ['TRAVIS'] == 'true' and os.environ['CI'] == 'true':
-            return unittest.expectedFailure()
+            return unittest.expectedFailure
     except KeyError:
         pass
 
