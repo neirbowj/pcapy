@@ -35,19 +35,6 @@ if sys.platform == 'win32':
     sources.append(os.path.join('win32', 'dllmain.cc'))
     macros.append(('WIN32', '1'))
 
-# HACK replace linker gcc with g++
-from distutils import sysconfig
-save_init_posix = sysconfig._init_posix
-def my_init_posix():
-	save_init_posix()
-	g = sysconfig._config_vars
-	if g['LDSHARED'][:3]=='gcc':
-		before = g['LDSHARED']
-		g['LDSHARED'] = 'g++'+g['LDSHARED'][3:]
-		print('my_init_posix: changing LDSHARED ={} to {}'.format(
-			before, g['LDSHARED']))
-sysconfig._init_posix = my_init_posix
-
 setup(name = PACKAGE_NAME,
       version = "0.10.9-dev",
       url = "http://oss.coresecurity.com/projects/pcapy.html",
